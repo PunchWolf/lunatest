@@ -210,6 +210,10 @@ end
 ---Skip a test, with a note, e.g. "TODO".
 function skip(msg) error(Skip { msg=msg }) end
 
+---Assert for use with Hamcrest Matchers
+function assert_that(got, matcher)
+    wraptest(matcher.matches(got), "", { reason=fmt("Expected %s but was %s.", matcher.describe, TS(got)) })
+end
 
 ---got == true.
 -- (Named "assert_true" to not conflict with standard assert.)
