@@ -212,7 +212,8 @@ function skip(msg) error(Skip { msg=msg }) end
 
 ---Assert for use with Hamcrest Matchers
 function assert_that(got, matcher)
-    wraptest(matcher.matches(got), "", { reason=fmt("Expected %s but was %s.", matcher.describe, TS(got)) })
+    local result, mismatch = matcher.matches(got)
+    wraptest(result, "", { reason=fmt("Expected %s but was %s.", matcher.describe, mismatch or TS(got)) })
 end
 
 ---got == true.
