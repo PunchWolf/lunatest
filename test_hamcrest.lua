@@ -20,5 +20,20 @@ function test_syntactic_sugars()
     assert_that(nil, is_nil())
 end
 
+function test_of_type()
+    assert_that("test", is(of_type("string")))
+    assert_that(4, is(of_type("number")))
+end
+
+function test_contains_string()
+    assert_that("testable", contains_string("test"))
+    assert_that("testable", contains_string("tab"))
+    assert_that("testable", contains_string("testable"))
+end
+
+function test_starts_with()
+    assert_that("testable", starts_with("tes"))
+    assert_that("testable", starts_with("testable"))
+end
 
 lunatest.run()

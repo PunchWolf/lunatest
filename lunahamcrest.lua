@@ -2,6 +2,10 @@
 --- @author Janne Sinivirta
 --
 
+-- required core global functions
+local type = type
+local string = string
+
 -- ##############
 -- #  Matchers  #
 -- ##############
@@ -33,10 +37,40 @@ function is_not(matcher)
     }
 end
 
+--- Matcher for nil. Should be named nil but that is of course a reserved word
 function is_nil()
     return {
         expected = nil,
         matches = function(value) return value == nil end,
         describe = "nil"
+    }
+end
+
+--- Matcher to check == equality
+function of_type(expected_type)
+    return {
+        expected = expected_type,
+        matches = function(value)
+            return type(value) == expected_type, type(value)
+        end,
+        describe = "type " .. expected_type
+    }
+end
+
+--- Matcher to check if string contains a given substring
+function contains_string(substring)
+    return {
+        expected = substring,
+        matches = function(value) return type(value) == "string" and type(substring) == "string" and string.find(value, substring) ~= nil end,
+        describe = "contains " .. substring
+    }
+end
+
+--- Matcher to check if string starts with a given substring
+function starts_with(substring)
+    return {
+        expected = substring,
+        matches = function(value) return type(value) == "string" and type(substring) == "string" and string.find(value, substring) == 1 end,
+        describe = "starts with " .. substring
     }
 end
