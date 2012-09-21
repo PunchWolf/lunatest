@@ -74,3 +74,12 @@ function starts_with(substring)
         describe = "starts with " .. substring
     }
 end
+
+--- Matcher to check == equality
+function equals_ignoring_case(object)
+    return {
+        expected = object,
+        matches = function(value) return type(value) == "string" and type(object) == "string" and string.lower(object) == string.lower(value) end,
+        describe = "equal to " .. object .. " ignoring case"
+    }
+end

@@ -36,4 +36,8 @@ function test_starts_with()
     assert_that("testable", starts_with("testable"))
 end
 
+function test_starts_with()
+    assert_that("testable", equals_ignoring_case("tesTaBlE"))
+end
+
 lunatest.run()
