@@ -7,6 +7,16 @@ local type = type
 local string = string
 
 -- ##############
+-- #  Helpers  #
+-- ##############
+local function is_matcher(matcher)
+    if (matcher.matches == nil or type(matcher.matches) ~= "function") then return false end
+    if (matcher.describe == nil) then return false end
+
+    return true
+end
+
+-- ##############
 -- #  Matchers  #
 -- ##############
 
@@ -28,6 +38,7 @@ end
 
 --- Matcher to negate the result of enclosed Matcher
 function is_not(matcher)
+    if (not is_matcher(matcher)) then error("not a matcher") end
     return {
         matches = function(value) return not matcher.matches(value) end,
         describe = "not " .. matcher.describe
@@ -68,10 +79,14 @@ function starts_with(substring)
     }
 end
 
---- Matcher to check == equality
+--- Matcher to check string equality ignoring differences in case
 function equals_ignoring_case(object)
     return {
         matches = function(value) return type(value) == "string" and type(object) == "string" and string.lower(object) == string.lower(value) end,
         describe = "equal to " .. object .. " ignoring case"
     }
 end
+
+
+-- greaterThan, greaterThanOrEqualTo, lessThan, lessThanOrEqualTo - test ordering
+
